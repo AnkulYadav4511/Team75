@@ -90,15 +90,6 @@ export default function AdminLayout() {
           tabBarIcon: ({ color }) => <Ionicons name="people" size={24} color={color} />,
         }}
       />
-
-      {/* NEW EXPORT TAB */}
-      <Tabs.Screen
-        name="reports"
-        options={{
-          title: 'Reports',
-          tabBarIcon: ({ color }) => <Ionicons name="download" size={24} color={color} />,
-        }}
-      />
       
       <Tabs.Screen
         name="settings"
@@ -108,7 +99,6 @@ export default function AdminLayout() {
         }}
       />
 
-      {/* Internal pages (HREF null hides them) */}
       <Tabs.Screen name="live-track" options={{ href: null, headerTitle: 'Live Tracking' }} />
       <Tabs.Screen name="workers-shifts" options={{ href: null, headerTitle: 'Shift History' }} />
       <Tabs.Screen name="details" options={{ href: null, headerTitle: 'Details' }} />

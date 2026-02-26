@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Replace with your current local IP
-export const BASE_URL = 'http://192.168.1.8:5000/api';
+export const BASE_URL = 'http://192.168.1.6:5000/api';
 // export const BASE_URL = 'https://tracker-app-r6gy.onrender.com/api';
 // export const BASE_URL = 'https://tracker-backend-5oqo.onrender.com/api';
 

@@ -210,6 +210,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const { Parser } = require('json2csv');
 
 const User = require('./models/User');
 const Shift = require('./models/Shift');
@@ -631,6 +632,58 @@ app.get('api/export-monthly-notes', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+app.get('/api/download-shift-report/:shiftId', async (req, res) => {
+    try {
+        const { shiftId } = req.params;
+        
+        // Populate 'notes' to get the details from the Note collection
+        const shift = await Shift.findById(shiftId).populate('notes');
+
+        if (!shift) {
+            return res.status(404).json({ message: "Shift not found" });
+        }
+
+        const reportData = shift.notes.length > 0 ? shift.notes.map(note => ({
+            'Date': shift.date,
+            'Shift Login': shift.startTime ? new Date(shift.startTime).toLocaleTimeString() : 'N/A',
+            'Shift Logout': shift.logoutTime,
+            'Class Name': note.className,
+            'Director': note.directorName,
+            'Phone': note.directorNumber,
+            'Address': note.address,
+            'Student Count': note.studentCount,
+            'Class Count': note.classCount,
+            'Latitude': note.latitude,
+            'Longitude': note.longitude,
+            'Created At': new Date(note.createdAt).toLocaleString()
+        })) : [{
+            'Date': shift.date,
+            'Shift Login': shift.startTime ? new Date(shift.startTime).toLocaleTimeString() : 'N/A',
+            'Shift Logout': shift.logoutTime,
+            'Notes': 'No notes recorded for this shift'
+        }];
+
+        const fields = [
+            'Date', 'Shift Login', 'Shift Logout', 'Class Name', 
+            'Director', 'Phone', 'Address', 'Student Count', 
+            'Class Count', 'Latitude', 'Longitude', 'Created At'
+        ];
+        
+        const json2csvParser = new Parser({ fields });
+        const csv = json2csvParser.parse(reportData);
+
+        const fileName = `Report_${shift.date.replace(/\//g, '-')}.csv`;
+        
+        res.header('Content-Type', 'text/csv');
+        res.attachment(fileName);
+        return res.send(csv);
+
+    } catch (error) {
+        console.error("Export Error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 });
 
 const PORT = 5000;
