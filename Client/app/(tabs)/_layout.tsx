@@ -20,7 +20,7 @@ export default function TabLayout() {
         },
       }}
     >
-      {/* 1. Dashboard - First thing they see */}
+      {/* 1. Dashboard - Visible */}
       <Tabs.Screen
         name="dashboard"
         options={{
@@ -32,7 +32,7 @@ export default function TabLayout() {
         }}
       />
 
-      {/* 2. Main Tracking Map */}
+      {/* 2. Live Tracking Map - Visible */}
       <Tabs.Screen
         name="index"
         options={{
@@ -44,19 +44,7 @@ export default function TabLayout() {
         }}
       />
 
-      {/* 3. Lead Management */}
-      <Tabs.Screen
-        name="leads"
-        options={{
-          title: 'Lead Management',
-          tabBarLabel: 'Leads',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="people-outline" size={size} color={color} />
-          ),
-        }}
-      />
-
-      {/* 4. Profile */}
+      {/* 3. Profile - Visible */}
       <Tabs.Screen
         name="profile"
         options={{
@@ -70,7 +58,28 @@ export default function TabLayout() {
 
       {/* --- HIDDEN SCREENS --- */}
 
-      {/* Hide Details: Accessible via router.push but not visible in the bottom bar */}
+      {/* Hidden for now as requested */}
+      <Tabs.Screen
+        name="leads"
+        options={{
+          href: null, 
+        }}
+      />
+
+      <Tabs.Screen
+        name="workers"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="settings"
+        options={{
+          href: null,
+        }}
+      />
+
       <Tabs.Screen
         name="details"
         options={{
@@ -78,7 +87,6 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Hide Explore: Unused default screen */}
       <Tabs.Screen
         name="explore"
         options={{
